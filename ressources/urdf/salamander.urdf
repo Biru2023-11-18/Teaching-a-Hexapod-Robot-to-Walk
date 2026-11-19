@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<robot name="salamander_refined">
+
+  <!-- Materials (optional but good practice) -->
+  <material name="grey">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+  <material name="black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+
+  <!-- Body Segments (Spine: Head, Midbody1, Midbody2, Pelvis) -->
+  <link name="head">
+    <inertial><origin xyz="0 0 0"/><mass value="0.5"/><inertia ixx="0.005" ixy="0" ixz="0" iyy="0.005" iyz="0" izz="0.005"/></inertial>
+    <visual><geometry><box size="0.1 0.08 0.05"/></geometry><material name="grey"/></visual>
+    <collision><geometry><box size="0.1 0.08 0.05"/></geometry></collision>
+  </link>
+
+  <link name="midbody1">
+    <inertial><origin xyz="0 0 0"/><mass value="0.7"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.02"/></inertial>
+    <visual><geometry><box size="0.1 0.1 0.05"/></geometry><material name="grey"/></visual>
+    <collision><geometry><box size="0.1 0.1 0.05"/></geometry></collision>
+  </link>
+  <joint name="head_midbody1_joint" type="revolute">
+    <parent link="head"/>
+    <child link="midbody1"/>
+    <origin xyz="-0.05 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/> <!-- Allows lateral bending around Z axis -->
+    <limit lower="-0.5" upper="0.5" effort="5" velocity="2"/>
+  </joint>
+
+  <link name="pelvis">
+    <inertial><origin xyz="0 0 0"/><mass value="0.8"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.02"/></inertial>
+    <visual><geometry><box size="0.1 0.1 0.05"/></geometry><material name="grey"/></visual>
+    <collision><geometry><box size="0.1 0.1 0.05"/></geometry></collision>
+  </link>
+  <joint name="midbody1_pelvis_joint" type="revolute">
+    <parent link="midbody1"/>
+    <child link="pelvis"/>
+    <origin xyz="-0.05 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/> <!-- Allows lateral bending around Z axis -->
+    <limit lower="-0.5" upper="0.5" effort="5" velocity="2"/>
+  </joint>
+
+  <!-- ATTACH LEGS TO CORRECT LINKS (Forelimbs to Head link, Hindlimbs to Pelvis link) -->
+
+  <!-- Leg 1 (Front Left) -->
+  <link name="leg1_upper">
+    <!-- ... inertials, visual, collision omitted for brevity, assumed same as your original ... -->
+  </link>
+  <joint name="head_leg1_joint" type="revolute">
+    <parent link="head"/>
+    <child link="leg1_upper"/>
+    <origin xyz="0.05 0.05 0" rpy="0 0 0"/> <!-- Position adjusted for Head link -->
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.5" upper="1.5" effort="5" velocity="5"/>
+  </joint>
+  <!-- ... leg1_lower and leg1_knee_joint follow as in original ... -->
+
+  <!-- Leg 2 (Front Right) -->
+  <link name="leg2_upper">
+    <!-- ... -->
+  </link>
+  <joint name="head_leg2_joint" type="revolute">
+    <parent link="head"/>
+    <child link="leg2_upper"/>
+    <origin xyz="0.05 -0.05 0" rpy="0 0 0"/> <!-- Position adjusted for Head link -->
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.5" upper="1.5" effort="5" velocity="5"/>
+  </joint>
+  <!-- ... leg2_lower and leg2_knee_joint follow as in original ... -->
+
+  <!-- Leg 3 (Back Left) -->
+  <link name="leg3_upper">
+    <!-- ... -->
+  </link>
+  <joint name="pelvis_leg3_joint" type="revolute">
+    <parent link="pelvis"/>
+    <child link="leg3_upper"/>
+    <origin xyz="-0.05 0.05 0" rpy="0 0 0"/> <!-- Position adjusted for Pelvis link -->
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.5" upper="1.5" effort="5" velocity="5"/>
+  </joint>
+  <!-- ... leg3_lower and leg3_knee_joint follow as in original ... -->
+
+  <!-- Leg 4 (Back Right) -->
+  <link name="leg4_upper">
+    <!-- ... -->
+  </link>
+  <joint name="pelvis_leg4_joint" type="revolute">
+    <parent link="pelvis"/>
+    <child link="leg4_upper"/>
+    <origin xyz="-0.05 -0.05 0" rpy="0 0 0"/> <!-- Position adjusted for Pelvis link -->
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.5" upper="1.5" effort="5" velocity="5"/>
+  </joint>
+  <!-- ... leg4_lower and leg4_knee_joint follow as in original ... -->
+
+  <!-- Tail (Attached to Pelvis) -->
+  <link name="tail1">
+    <!-- ... -->
+  </link>
+  <joint name="pelvis_tail1_joint" type="revolute">
+    <parent link="pelvis"/>
+    <child link="tail1"/>
+    <origin xyz="-0.05 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.7" upper="0.7" effort="2" velocity="2"/>
+  </joint>
+  <!-- ... tail2, tail3 and subsequent joints follow as in original ... -->
+
+</robot>
